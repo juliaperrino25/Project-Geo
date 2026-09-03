@@ -80,9 +80,9 @@ This snapshot is a frozen moment before the July Crisis and the guns of August r
 
 To keep the quiz playable while respecting 1914 borders, the map makes these intentional simplifications:
 
-1. **Austria-Hungary** is drawn as a single territory, not as its Austrian and Hungarian halves or its constituent crown lands
+1. **Austria-Hungary** is drawn as a single territory, not as its Austrian and Hungarian halves or its crown lands
 
-2. **The Ottoman Empire** is drawn as one territory including its Arabian provinces; the Nejd emirate in the interior is shown separately
+2. **The Ottoman Empire** is drawn as one territory including its Arabian provinces; the Nejd emirate in the interior is separate
 
 3. **Kamerun** is drawn at its pre-1911 extent, so the "Neukamerun" strips ceded by France in 1911 are not shown
 
