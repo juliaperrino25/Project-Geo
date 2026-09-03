@@ -8,7 +8,8 @@
     "test:unit": "node --test test/game.test.js",
     "test:e2e": "node test/e2e.js",
     "test": "npm run test:unit && npm run test:e2e",
-    "serve": "npx http-server -p 8080 -c-1 ."
+    "serve": "npx http-server -p 8080 -c-1 .",
+    "bundle": "node tools/bundle.js --full"
   },
   "license": "MIT"
 }

@@ -26,6 +26,18 @@ xdg-open index.html        # or double-click it
 npm run serve              # http://localhost:8080
 ```
 
+## One-file build
+
+`npm run bundle` writes `dist/play.html`: the whole game (styles, scripts, map
+data and historical notes) inlined into a single self-contained page you can
+open from disk, email, or host anywhere. Add no flag for a fragment without the
+document skeleton, for hosts that supply their own.
+
+```bash
+npm run bundle          # dist/play.html, a complete HTML document
+node tools/bundle.js    # same, as a fragment
+```
+
 ## Tests
 
 ```bash
