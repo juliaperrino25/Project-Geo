@@ -1,20 +1,22 @@
 {
- "_comment": "Entity list for the world as of 1 January 1940. 'units' are Natural Earth 50m map-unit GU_A3 codes; entries starting with '@' are special geometry rules implemented in tools/build_data.py. Regions: europe, asia (incl. Middle East), africa, americas, oceania.",
+ "_comment": "Entity list for the world as of 1 January 1914, the last New Year before the First World War. 'units' are Natural Earth 50m map-unit GU_A3 codes; entries starting with '@' are geometry rules implemented in tools/build_data.py. Regions: europe, asia (incl. Middle East), africa, americas, oceania.",
  "meta": {
-  "id": "1940",
-  "year": 1940,
-  "label": "1940",
-  "title": "World, 1 January 1940",
-  "date": "1940-01-01"
+  "id": "1914",
+  "year": 1914,
+  "label": "1914",
+  "title": "World, 1 January 1914",
+  "date": "1914-01-01"
  },
  "entities": [
   {
    "id": "united-kingdom",
-   "name": "United Kingdom",
+   "name": "United Kingdom of Great Britain and Ireland",
    "aliases": [
-    "Great Britain",
+    "United Kingdom",
     "Britain",
-    "UK"
+    "Great Britain",
+    "UK",
+    "Ireland"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -25,210 +27,203 @@
     "SCT",
     "WLS",
     "NIR",
+    "IRL",
     "IMN",
     "JEY",
     "GGY"
    ]
   },
   {
-   "id": "ireland",
-   "name": "Ireland",
+   "id": "german-empire",
+   "name": "German Empire",
    "aliases": [
-    "Éire",
-    "Irish Free State"
+    "Germany",
+    "Deutsches Reich",
+    "Prussia"
    ],
    "sovereign": null,
    "status": "sovereign",
    "region": "europe",
    "quiz": true,
    "units": [
-    "IRL"
+    "@german_empire"
    ]
   },
   {
-   "id": "iceland",
-   "name": "Iceland",
+   "id": "austria-hungary",
+   "name": "Austro-Hungarian Empire",
    "aliases": [
-    "Kingdom of Iceland"
+    "Austria-Hungary",
+    "Austria",
+    "Hungary",
+    "Habsburg Empire",
+    "Dual Monarchy"
    ],
    "sovereign": null,
    "status": "sovereign",
    "region": "europe",
    "quiz": true,
    "units": [
-    "ISL"
+    "@austria_hungary"
    ]
   },
   {
-   "id": "norway",
-   "name": "Norway",
-   "aliases": [],
+   "id": "russian-empire",
+   "name": "Russian Empire",
+   "aliases": [
+    "Russia",
+    "Tsarist Russia"
+   ],
    "sovereign": null,
    "status": "sovereign",
    "region": "europe",
    "quiz": true,
    "units": [
-    "NOR",
-    "NSV",
-    "NJM"
-   ]
-  },
-  {
-   "id": "sweden",
-   "name": "Sweden",
-   "aliases": [],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "SWE"
+    "@russian_empire"
    ]
   },
   {
    "id": "finland",
-   "name": "Finland",
-   "aliases": [],
-   "sovereign": null,
-   "status": "sovereign",
+   "name": "Grand Duchy of Finland (Russia)",
+   "aliases": [
+    "Finland"
+   ],
+   "sovereign": "Russian Empire",
+   "status": "dependency",
    "region": "europe",
    "quiz": true,
    "units": [
     "FIN",
-    "ALD",
-    "@finland_ceded_1940"
+    "ALD"
    ]
   },
   {
-   "id": "denmark",
-   "name": "Denmark",
-   "aliases": [],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "DNK",
-    "FRO"
-   ]
-  },
-  {
-   "id": "greenland",
-   "name": "Greenland (Danish colony)",
+   "id": "france",
+   "name": "France",
    "aliases": [
-    "Greenland"
-   ],
-   "sovereign": "Denmark",
-   "status": "dependency",
-   "region": "americas",
-   "quiz": true,
-   "units": [
-    "GRL"
-   ]
-  },
-  {
-   "id": "estonia",
-   "name": "Estonia",
-   "aliases": [],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "EST"
-   ]
-  },
-  {
-   "id": "latvia",
-   "name": "Latvia",
-   "aliases": [],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "LVA"
-   ]
-  },
-  {
-   "id": "lithuania",
-   "name": "Lithuania",
-   "aliases": [],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "@lithuania_without_memel"
-   ]
-  },
-  {
-   "id": "germany",
-   "name": "Germany",
-   "aliases": [
-    "German Reich",
-    "Greater German Reich",
-    "Third Reich",
-    "Nazi Germany"
+    "French Republic",
+    "Third Republic"
    ],
    "sovereign": null,
    "status": "sovereign",
    "region": "europe",
    "quiz": true,
    "units": [
-    "DEU",
-    "AUT",
-    "@bohemia_moravia_sudetenland",
-    "@east_prussia_kaliningrad",
-    "@memel",
-    "@former_german_east_from_poland"
+    "@france_1914"
    ]
   },
   {
-   "id": "general-government",
-   "name": "General Government (German-occupied Poland)",
+   "id": "italy",
+   "name": "Kingdom of Italy",
    "aliases": [
-    "Occupied Poland",
-    "Poland",
-    "Generalgouvernement"
-   ],
-   "sovereign": "Germany",
-   "status": "occupied",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "@occupied_poland_west_of_mr_line"
-   ]
-  },
-  {
-   "id": "slovakia",
-   "name": "Slovakia",
-   "aliases": [
-    "Slovak Republic",
-    "Slovak State"
-   ],
-   "sovereign": "Germany",
-   "status": "puppet",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "@slovakia_1940"
-   ]
-  },
-  {
-   "id": "hungary",
-   "name": "Hungary",
-   "aliases": [
-    "Kingdom of Hungary"
+    "Italy"
    ],
    "sovereign": null,
    "status": "sovereign",
    "region": "europe",
    "quiz": true,
    "units": [
-    "HUN",
-    "@vienna_award_south_slovakia",
-    "@carpathian_ruthenia"
+    "@italy_1914"
+   ]
+  },
+  {
+   "id": "ottoman-empire",
+   "name": "Ottoman Empire",
+   "aliases": [
+    "Turkey",
+    "Turkish Empire",
+    "Sublime Porte"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "asia",
+   "quiz": true,
+   "units": [
+    "@ottoman_empire"
+   ]
+  },
+  {
+   "id": "serbia",
+   "name": "Serbia",
+   "aliases": [
+    "Kingdom of Serbia"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "@serbia_1914"
+   ]
+  },
+  {
+   "id": "montenegro",
+   "name": "Montenegro",
+   "aliases": [
+    "Kingdom of Montenegro"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "MNE"
+   ]
+  },
+  {
+   "id": "albania",
+   "name": "Albania",
+   "aliases": [
+    "Principality of Albania"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "ALB"
+   ]
+  },
+  {
+   "id": "greece",
+   "name": "Greece",
+   "aliases": [
+    "Kingdom of Greece"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "@greece_1914"
+   ]
+  },
+  {
+   "id": "bulgaria",
+   "name": "Bulgaria",
+   "aliases": [
+    "Kingdom of Bulgaria"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "@bulgaria_1914"
+   ]
+  },
+  {
+   "id": "romania",
+   "name": "Romania",
+   "aliases": [
+    "Kingdom of Romania"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "@romania_1914"
    ]
   },
   {
@@ -272,33 +267,6 @@
    ]
   },
   {
-   "id": "france",
-   "name": "France",
-   "aliases": [
-    "French Republic",
-    "Third Republic"
-   ],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "FXX"
-   ]
-  },
-  {
-   "id": "monaco",
-   "name": "Monaco",
-   "aliases": [],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": false,
-   "units": [
-    "MCO"
-   ]
-  },
-  {
    "id": "switzerland",
    "name": "Switzerland",
    "aliases": [],
@@ -311,52 +279,10 @@
    ]
   },
   {
-   "id": "liechtenstein",
-   "name": "Liechtenstein",
-   "aliases": [],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": false,
-   "units": [
-    "LIE"
-   ]
-  },
-  {
-   "id": "italy",
-   "name": "Italy",
-   "aliases": [
-    "Kingdom of Italy",
-    "Fascist Italy"
-   ],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "ITA",
-    "VAT",
-    "@italian_istria_dalmatia",
-    "@dodecanese"
-   ]
-  },
-  {
-   "id": "san-marino",
-   "name": "San Marino",
-   "aliases": [],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": false,
-   "units": [
-    "SMR"
-   ]
-  },
-  {
    "id": "spain",
    "name": "Spain",
    "aliases": [
-    "Spanish State"
+    "Kingdom of Spain"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -364,6 +290,93 @@
    "quiz": true,
    "units": [
     "ESP"
+   ]
+  },
+  {
+   "id": "portugal",
+   "name": "Portugal",
+   "aliases": [
+    "Portuguese Republic"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "PRX",
+    "PAZ",
+    "PMD"
+   ]
+  },
+  {
+   "id": "denmark",
+   "name": "Denmark",
+   "aliases": [],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "@denmark_1914",
+    "FRO"
+   ]
+  },
+  {
+   "id": "iceland",
+   "name": "Iceland (Danish dependency)",
+   "aliases": [
+    "Iceland"
+   ],
+   "sovereign": "Denmark",
+   "status": "dependency",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "ISL"
+   ]
+  },
+  {
+   "id": "greenland",
+   "name": "Greenland (Danish colony)",
+   "aliases": [
+    "Greenland"
+   ],
+   "sovereign": "Denmark",
+   "status": "dependency",
+   "region": "americas",
+   "quiz": true,
+   "units": [
+    "GRL"
+   ]
+  },
+  {
+   "id": "norway",
+   "name": "Norway",
+   "aliases": [
+    "Kingdom of Norway"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "NOR",
+    "NSV",
+    "NJM"
+   ]
+  },
+  {
+   "id": "sweden",
+   "name": "Sweden",
+   "aliases": [
+    "Kingdom of Sweden"
+   ],
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "europe",
+   "quiz": true,
+   "units": [
+    "SWE"
    ]
   },
   {
@@ -379,107 +392,39 @@
    ]
   },
   {
-   "id": "portugal",
-   "name": "Portugal",
-   "aliases": [
-    "Estado Novo"
-   ],
+   "id": "monaco",
+   "name": "Monaco",
+   "aliases": [],
    "sovereign": null,
    "status": "sovereign",
    "region": "europe",
-   "quiz": true,
+   "quiz": false,
    "units": [
-    "PRX",
-    "PAZ",
-    "PMD"
+    "MCO"
    ]
   },
   {
-   "id": "yugoslavia",
-   "name": "Yugoslavia",
-   "aliases": [
-    "Kingdom of Yugoslavia"
-   ],
+   "id": "san-marino",
+   "name": "San Marino",
+   "aliases": [],
    "sovereign": null,
    "status": "sovereign",
    "region": "europe",
-   "quiz": true,
+   "quiz": false,
    "units": [
-    "@yugoslavia_1940"
+    "SMR"
    ]
   },
   {
-   "id": "albania",
-   "name": "Albania (Italian protectorate)",
-   "aliases": [
-    "Albania"
-   ],
-   "sovereign": "Italy",
-   "status": "dependency",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "ALB"
-   ]
-  },
-  {
-   "id": "greece",
-   "name": "Greece",
-   "aliases": [
-    "Kingdom of Greece"
-   ],
+   "id": "liechtenstein",
+   "name": "Liechtenstein",
+   "aliases": [],
    "sovereign": null,
    "status": "sovereign",
    "region": "europe",
-   "quiz": true,
+   "quiz": false,
    "units": [
-    "@greece_without_dodecanese"
-   ]
-  },
-  {
-   "id": "bulgaria",
-   "name": "Bulgaria",
-   "aliases": [
-    "Kingdom of Bulgaria"
-   ],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "@bulgaria_without_south_dobruja"
-   ]
-  },
-  {
-   "id": "romania",
-   "name": "Romania",
-   "aliases": [
-    "Kingdom of Romania",
-    "Greater Romania"
-   ],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "ROU",
-    "@bessarabia_bukovina_dobruja"
-   ]
-  },
-  {
-   "id": "ussr",
-   "name": "Soviet Union",
-   "aliases": [
-    "USSR",
-    "Union of Soviet Socialist Republics",
-    "Russia"
-   ],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "europe",
-   "quiz": true,
-   "units": [
-    "@ussr_1940"
+    "LIE"
    ]
   },
   {
@@ -498,7 +443,7 @@
   },
   {
    "id": "cyprus",
-   "name": "Cyprus (British colony)",
+   "name": "Cyprus (British administration)",
    "aliases": [
     "Cyprus"
    ],
@@ -512,120 +457,49 @@
    ]
   },
   {
-   "id": "turkey",
-   "name": "Turkey",
+   "id": "persia",
+   "name": "Persia",
    "aliases": [
-    "Republic of Turkey"
+    "Iran",
+    "Qajar Persia"
    ],
    "sovereign": null,
    "status": "sovereign",
    "region": "asia",
    "quiz": true,
    "units": [
-    "TUR"
+    "IRN"
    ]
   },
   {
-   "id": "syria",
-   "name": "Syria (French mandate)",
+   "id": "afghanistan",
+   "name": "Afghanistan",
    "aliases": [
-    "Syria"
-   ],
-   "sovereign": "France",
-   "status": "dependency",
-   "region": "asia",
-   "quiz": true,
-   "units": [
-    "SYR"
-   ]
-  },
-  {
-   "id": "lebanon",
-   "name": "Lebanon (French mandate)",
-   "aliases": [
-    "Lebanon"
-   ],
-   "sovereign": "France",
-   "status": "dependency",
-   "region": "asia",
-   "quiz": true,
-   "units": [
-    "LBN"
-   ]
-  },
-  {
-   "id": "palestine",
-   "name": "Palestine (British mandate)",
-   "aliases": [
-    "Palestine",
-    "Mandatory Palestine"
-   ],
-   "sovereign": "United Kingdom",
-   "status": "dependency",
-   "region": "asia",
-   "quiz": true,
-   "units": [
-    "ISR",
-    "GAZ",
-    "WEB"
-   ]
-  },
-  {
-   "id": "transjordan",
-   "name": "Transjordan (British mandate)",
-   "aliases": [
-    "Jordan",
-    "Trans-Jordan"
-   ],
-   "sovereign": "United Kingdom",
-   "status": "dependency",
-   "region": "asia",
-   "quiz": true,
-   "units": [
-    "JOR"
-   ]
-  },
-  {
-   "id": "iraq",
-   "name": "Iraq",
-   "aliases": [
-    "Kingdom of Iraq"
+    "Emirate of Afghanistan"
    ],
    "sovereign": null,
    "status": "sovereign",
    "region": "asia",
    "quiz": true,
    "units": [
-    "IRQ"
+    "AFG"
    ]
   },
   {
-   "id": "saudi-arabia",
-   "name": "Saudi Arabia",
+   "id": "nejd",
+   "name": "Nejd (Emirate of Riyadh)",
    "aliases": [
-    "Kingdom of Saudi Arabia"
+    "Nejd",
+    "Najd",
+    "Arabia",
+    "Saudi Arabia"
    ],
    "sovereign": null,
    "status": "sovereign",
    "region": "asia",
    "quiz": true,
    "units": [
-    "SAU"
-   ]
-  },
-  {
-   "id": "yemen",
-   "name": "Yemen (Mutawakkilite Kingdom)",
-   "aliases": [
-    "Yemen",
-    "North Yemen"
-   ],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "asia",
-   "quiz": true,
-   "units": [
-    "@yemen_north"
+    "@nejd_1914"
    ]
   },
   {
@@ -676,11 +550,11 @@
   },
   {
    "id": "qatar",
-   "name": "Qatar (British protectorate)",
+   "name": "Qatar (Ottoman suzerainty)",
    "aliases": [
     "Qatar"
    ],
-   "sovereign": "United Kingdom",
+   "sovereign": "Ottoman Empire",
    "status": "dependency",
    "region": "asia",
    "quiz": true,
@@ -717,41 +591,15 @@
    ]
   },
   {
-   "id": "iran",
-   "name": "Iran",
+   "id": "british-raj",
+   "name": "British Raj",
    "aliases": [
-    "Persia",
-    "Imperial State of Iran"
-   ],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "asia",
-   "quiz": true,
-   "units": [
-    "IRN"
-   ]
-  },
-  {
-   "id": "afghanistan",
-   "name": "Afghanistan",
-   "aliases": [
-    "Kingdom of Afghanistan"
-   ],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "asia",
-   "quiz": true,
-   "units": [
-    "AFG"
-   ]
-  },
-  {
-   "id": "british-india",
-   "name": "British India",
-   "aliases": [
+    "British India",
     "India",
-    "British Raj",
-    "Indian Empire"
+    "Indian Empire",
+    "Burma",
+    "Pakistan",
+    "Bangladesh"
    ],
    "sovereign": "United Kingdom",
    "status": "dependency",
@@ -761,7 +609,8 @@
     "IND",
     "PAK",
     "BGD",
-    "KAS"
+    "KAS",
+    "MMR"
    ]
   },
   {
@@ -781,9 +630,7 @@
   {
    "id": "bhutan",
    "name": "Bhutan",
-   "aliases": [
-    "Kingdom of Bhutan"
-   ],
+   "aliases": [],
    "sovereign": null,
    "status": "sovereign",
    "region": "asia",
@@ -822,25 +669,11 @@
    ]
   },
   {
-   "id": "burma",
-   "name": "Burma (British colony)",
+   "id": "siam",
+   "name": "Siam",
    "aliases": [
-    "Burma",
-    "Myanmar"
-   ],
-   "sovereign": "United Kingdom",
-   "status": "dependency",
-   "region": "asia",
-   "quiz": true,
-   "units": [
-    "MMR"
-   ]
-  },
-  {
-   "id": "thailand",
-   "name": "Thailand",
-   "aliases": [
-    "Siam"
+    "Thailand",
+    "Rattanakosin Kingdom"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -857,7 +690,9 @@
     "Indochina",
     "Vietnam",
     "Laos",
-    "Cambodia"
+    "Cambodia",
+    "Annam",
+    "Tonkin"
    ],
    "sovereign": "France",
    "status": "dependency",
@@ -875,8 +710,8 @@
    "aliases": [
     "Malaya",
     "Straits Settlements",
-    "Federated Malay States",
-    "Malaysia"
+    "Malaysia",
+    "Singapore"
    ],
    "sovereign": "United Kingdom",
    "status": "dependency",
@@ -906,10 +741,10 @@
    ]
   },
   {
-   "id": "dutch-east-indies",
-   "name": "Dutch East Indies",
+   "id": "netherlands-indies",
+   "name": "Netherlands East Indies",
    "aliases": [
-    "Netherlands East Indies",
+    "Dutch East Indies",
     "Indonesia"
    ],
    "sovereign": "Netherlands",
@@ -937,10 +772,10 @@
   },
   {
    "id": "philippines",
-   "name": "Philippines (US Commonwealth)",
+   "name": "Philippines (United States)",
    "aliases": [
     "Philippines",
-    "Philippine Commonwealth"
+    "Philippine Islands"
    ],
    "sovereign": "United States",
    "status": "dependency",
@@ -952,32 +787,16 @@
   },
   {
    "id": "china",
-   "name": "China",
+   "name": "Republic of China",
    "aliases": [
-    "Republic of China",
-    "Nationalist China"
+    "China"
    ],
    "sovereign": null,
    "status": "sovereign",
    "region": "asia",
    "quiz": true,
    "units": [
-    "@china_proper"
-   ]
-  },
-  {
-   "id": "manchukuo",
-   "name": "Manchukuo",
-   "aliases": [
-    "Manchuria",
-    "Manchoukuo"
-   ],
-   "sovereign": "Japan",
-   "status": "puppet",
-   "region": "asia",
-   "quiz": true,
-   "units": [
-    "@manchuria"
+    "@china_1914"
    ]
   },
   {
@@ -996,41 +815,27 @@
    "id": "mongolia",
    "name": "Mongolia",
    "aliases": [
-    "Mongolian People's Republic",
-    "Outer Mongolia"
+    "Outer Mongolia",
+    "Bogd Khanate"
    ],
    "sovereign": null,
    "status": "sovereign",
    "region": "asia",
    "quiz": true,
    "units": [
-    "MNG"
-   ]
-  },
-  {
-   "id": "tannu-tuva",
-   "name": "Tannu Tuva",
-   "aliases": [
-    "Tuvan People's Republic",
-    "Tuva"
-   ],
-   "sovereign": null,
-   "status": "sovereign",
-   "region": "asia",
-   "quiz": true,
-   "units": [
+    "MNG",
     "@tuva"
    ]
   },
   {
    "id": "japan",
-   "name": "Japan",
+   "name": "Empire of Japan",
    "aliases": [
-    "Empire of Japan",
+    "Japan",
     "Korea",
-    "Chōsen",
-    "Taiwan",
-    "Formosa"
+    "Chosen",
+    "Formosa",
+    "Taiwan"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -1074,12 +879,13 @@
   },
   {
    "id": "egypt",
-   "name": "Egypt",
+   "name": "Egypt (British occupation)",
    "aliases": [
-    "Kingdom of Egypt"
+    "Egypt",
+    "Khedivate of Egypt"
    ],
-   "sovereign": null,
-   "status": "sovereign",
+   "sovereign": "United Kingdom",
+   "status": "occupied",
    "region": "africa",
    "quiz": true,
    "units": [
@@ -1105,9 +911,11 @@
    "id": "italian-libya",
    "name": "Italian Libya",
    "aliases": [
-    "Libya"
+    "Libya",
+    "Tripolitania",
+    "Cyrenaica"
    ],
-   "sovereign": "Italy",
+   "sovereign": "Kingdom of Italy",
    "status": "dependency",
    "region": "africa",
    "quiz": true,
@@ -1174,10 +982,11 @@
    ]
   },
   {
-   "id": "spanish-sahara",
-   "name": "Spanish Sahara",
+   "id": "rio-de-oro",
+   "name": "Rio de Oro (Spanish Sahara)",
    "aliases": [
-    "Río de Oro",
+    "Rio de Oro",
+    "Spanish Sahara",
     "Western Sahara"
    ],
    "sovereign": "Spain",
@@ -1192,7 +1001,7 @@
    "id": "spanish-guinea",
    "name": "Spanish Guinea",
    "aliases": [
-    "Río Muni",
+    "Rio Muni",
     "Equatorial Guinea",
     "Fernando Po"
    ],
@@ -1205,22 +1014,46 @@
    ]
   },
   {
-   "id": "italian-east-africa",
-   "name": "Italian East Africa",
+   "id": "abyssinia",
+   "name": "Abyssinia",
    "aliases": [
     "Ethiopia",
-    "Abyssinia",
-    "Eritrea",
-    "Italian Somaliland",
-    "Africa Orientale Italiana"
+    "Abyssinian Empire"
    ],
-   "sovereign": "Italy",
+   "sovereign": null,
+   "status": "sovereign",
+   "region": "africa",
+   "quiz": true,
+   "units": [
+    "ETH"
+   ]
+  },
+  {
+   "id": "eritrea",
+   "name": "Eritrea (Italian colony)",
+   "aliases": [
+    "Eritrea"
+   ],
+   "sovereign": "Kingdom of Italy",
    "status": "dependency",
    "region": "africa",
    "quiz": true,
    "units": [
-    "ETH",
-    "ERI",
+    "ERI"
+   ]
+  },
+  {
+   "id": "italian-somaliland",
+   "name": "Italian Somaliland",
+   "aliases": [
+    "Italian Somalia",
+    "Somalia"
+   ],
+   "sovereign": "Kingdom of Italy",
+   "status": "dependency",
+   "region": "africa",
+   "quiz": true,
+   "units": [
     "SOM"
    ]
   },
@@ -1242,7 +1075,8 @@
    "id": "french-somaliland",
    "name": "French Somaliland",
    "aliases": [
-    "Djibouti"
+    "Djibouti",
+    "Obock"
    ],
    "sovereign": "France",
    "status": "dependency",
@@ -1253,10 +1087,11 @@
    ]
   },
   {
-   "id": "kenya",
-   "name": "Kenya (British colony)",
+   "id": "british-east-africa",
+   "name": "British East Africa",
    "aliases": [
-    "Kenya"
+    "Kenya",
+    "East Africa Protectorate"
    ],
    "sovereign": "United Kingdom",
    "status": "dependency",
@@ -1281,20 +1116,82 @@
    ]
   },
   {
-   "id": "tanganyika",
-   "name": "Tanganyika Territory (British mandate)",
+   "id": "german-east-africa",
+   "name": "German East Africa",
    "aliases": [
     "Tanganyika",
+    "Deutsch-Ostafrika",
     "Tanzania",
-    "Zanzibar"
+    "Rwanda",
+    "Burundi"
    ],
-   "sovereign": "United Kingdom",
+   "sovereign": "German Empire",
    "status": "dependency",
    "region": "africa",
    "quiz": true,
    "units": [
     "TZA",
+    "RWA",
+    "BDI"
+   ]
+  },
+  {
+   "id": "zanzibar",
+   "name": "Zanzibar (British protectorate)",
+   "aliases": [
+    "Zanzibar"
+   ],
+   "sovereign": "United Kingdom",
+   "status": "dependency",
+   "region": "africa",
+   "quiz": false,
+   "units": [
     "TZZ"
+   ]
+  },
+  {
+   "id": "german-south-west-africa",
+   "name": "German South-West Africa",
+   "aliases": [
+    "South West Africa",
+    "Namibia",
+    "Deutsch-Sudwestafrika"
+   ],
+   "sovereign": "German Empire",
+   "status": "dependency",
+   "region": "africa",
+   "quiz": true,
+   "units": [
+    "NAM"
+   ]
+  },
+  {
+   "id": "kamerun",
+   "name": "Kamerun (German colony)",
+   "aliases": [
+    "Cameroon",
+    "Cameroun"
+   ],
+   "sovereign": "German Empire",
+   "status": "dependency",
+   "region": "africa",
+   "quiz": true,
+   "units": [
+    "CMR"
+   ]
+  },
+  {
+   "id": "togoland",
+   "name": "Togoland (German colony)",
+   "aliases": [
+    "Togo"
+   ],
+   "sovereign": "German Empire",
+   "status": "dependency",
+   "region": "africa",
+   "quiz": true,
+   "units": [
+    "TGO"
    ]
   },
   {
@@ -1371,21 +1268,6 @@
    ]
   },
   {
-   "id": "south-west-africa",
-   "name": "South West Africa (South African mandate)",
-   "aliases": [
-    "South West Africa",
-    "Namibia"
-   ],
-   "sovereign": "Union of South Africa",
-   "status": "dependency",
-   "region": "africa",
-   "quiz": true,
-   "units": [
-    "NAM"
-   ]
-  },
-  {
    "id": "basutoland",
    "name": "Basutoland",
    "aliases": [
@@ -1418,7 +1300,8 @@
    "id": "belgian-congo",
    "name": "Belgian Congo",
    "aliases": [
-    "Congo"
+    "Congo",
+    "Congo Free State"
    ],
    "sovereign": "Belgium",
    "status": "dependency",
@@ -1426,23 +1309,6 @@
    "quiz": true,
    "units": [
     "COD"
-   ]
-  },
-  {
-   "id": "ruanda-urundi",
-   "name": "Ruanda-Urundi (Belgian mandate)",
-   "aliases": [
-    "Ruanda-Urundi",
-    "Rwanda",
-    "Burundi"
-   ],
-   "sovereign": "Belgium",
-   "status": "dependency",
-   "region": "africa",
-   "quiz": true,
-   "units": [
-    "RWA",
-    "BDI"
    ]
   },
   {
@@ -1506,9 +1372,9 @@
   },
   {
    "id": "sao-tome",
-   "name": "São Tomé and Príncipe (Portuguese colony)",
+   "name": "Sao Tome and Principe (Portuguese colony)",
    "aliases": [
-    "São Tomé"
+    "Sao Tome"
    ],
    "sovereign": "Portugal",
    "status": "dependency",
@@ -1537,22 +1403,6 @@
     "COG",
     "CAF",
     "TCD"
-   ]
-  },
-  {
-   "id": "french-cameroon",
-   "name": "Cameroon (French mandate)",
-   "aliases": [
-    "Cameroun",
-    "Kamerun",
-    "French Cameroons"
-   ],
-   "sovereign": "France",
-   "status": "dependency",
-   "region": "africa",
-   "quiz": true,
-   "units": [
-    "@french_cameroon"
    ]
   },
   {
@@ -1585,21 +1435,6 @@
    ]
   },
   {
-   "id": "french-togoland",
-   "name": "Togoland (French mandate)",
-   "aliases": [
-    "Togo",
-    "French Togo"
-   ],
-   "sovereign": "France",
-   "status": "dependency",
-   "region": "africa",
-   "quiz": true,
-   "units": [
-    "TGO"
-   ]
-  },
-  {
    "id": "madagascar",
    "name": "Madagascar (French colony)",
    "aliases": [
@@ -1618,9 +1453,9 @@
   },
   {
    "id": "reunion",
-   "name": "Réunion (French colony)",
+   "name": "Reunion (French colony)",
    "aliases": [
-    "Réunion"
+    "Reunion"
    ],
    "sovereign": "France",
    "status": "dependency",
@@ -1648,16 +1483,14 @@
    "id": "nigeria",
    "name": "Nigeria (British colony)",
    "aliases": [
-    "Nigeria",
-    "British Cameroons"
+    "Nigeria"
    ],
    "sovereign": "United Kingdom",
    "status": "dependency",
    "region": "africa",
    "quiz": true,
    "units": [
-    "NGA",
-    "@british_cameroons"
+    "NGA"
    ]
   },
   {
@@ -1764,17 +1597,31 @@
   },
   {
    "id": "puerto-rico",
-   "name": "Puerto Rico (US territory)",
+   "name": "Puerto Rico (United States)",
    "aliases": [
-    "Puerto Rico",
-    "US Virgin Islands"
+    "Puerto Rico"
    ],
    "sovereign": "United States",
    "status": "dependency",
    "region": "americas",
    "quiz": false,
    "units": [
-    "PRI",
+    "PRI"
+   ]
+  },
+  {
+   "id": "danish-west-indies",
+   "name": "Danish West Indies",
+   "aliases": [
+    "US Virgin Islands",
+    "Virgin Islands",
+    "Saint Thomas"
+   ],
+   "sovereign": "Denmark",
+   "status": "dependency",
+   "region": "americas",
+   "quiz": false,
+   "units": [
     "VIR"
    ]
   },
@@ -1807,7 +1654,9 @@
   {
    "id": "mexico",
    "name": "Mexico",
-   "aliases": [],
+   "aliases": [
+    "United Mexican States"
+   ],
    "sovereign": null,
    "status": "sovereign",
    "region": "americas",
@@ -1893,7 +1742,9 @@
   {
    "id": "panama",
    "name": "Panama",
-   "aliases": [],
+   "aliases": [
+    "Panama Canal Zone"
+   ],
    "sovereign": null,
    "status": "sovereign",
    "region": "americas",
@@ -2017,9 +1868,9 @@
   },
   {
    "id": "curacao",
-   "name": "Curaçao and Dependencies (Dutch)",
+   "name": "Curacao and Dependencies (Dutch)",
    "aliases": [
-    "Curaçao",
+    "Curacao",
     "Aruba",
     "Netherlands Antilles"
    ],
@@ -2074,9 +1925,10 @@
   },
   {
    "id": "dutch-guiana",
-   "name": "Surinam (Dutch Guiana)",
+   "name": "Dutch Guiana (Surinam)",
    "aliases": [
     "Suriname",
+    "Surinam",
     "Dutch Guiana"
    ],
    "sovereign": "Netherlands",
@@ -2164,7 +2016,10 @@
   {
    "id": "chile",
    "name": "Chile",
-   "aliases": [],
+   "aliases": [
+    "Rapa Nui",
+    "Easter Island"
+   ],
    "sovereign": null,
    "status": "sovereign",
    "region": "americas",
@@ -2232,21 +2087,35 @@
    ]
   },
   {
-   "id": "papua-new-guinea",
-   "name": "Papua and New Guinea (Australian territories)",
+   "id": "papua",
+   "name": "Papua (Australian territory)",
    "aliases": [
     "Papua",
-    "New Guinea",
-    "Papua New Guinea",
-    "Territory of New Guinea"
+    "British New Guinea"
    ],
    "sovereign": "Australia",
    "status": "dependency",
    "region": "oceania",
    "quiz": true,
    "units": [
-    "PNX",
-    "PNB"
+    "@papua_south"
+   ]
+  },
+  {
+   "id": "german-new-guinea",
+   "name": "German New Guinea",
+   "aliases": [
+    "Kaiser-Wilhelmsland",
+    "Bismarck Archipelago",
+    "New Guinea",
+    "Papua New Guinea"
+   ],
+   "sovereign": "German Empire",
+   "status": "dependency",
+   "region": "oceania",
+   "quiz": true,
+   "units": [
+    "@german_new_guinea"
    ]
   },
   {
@@ -2267,12 +2136,13 @@
    ]
   },
   {
-   "id": "western-samoa",
-   "name": "Western Samoa (NZ mandate)",
+   "id": "german-samoa",
+   "name": "German Samoa",
    "aliases": [
-    "Samoa"
+    "Samoa",
+    "Western Samoa"
    ],
-   "sovereign": "New Zealand",
+   "sovereign": "German Empire",
    "status": "dependency",
    "region": "oceania",
    "quiz": false,
@@ -2282,14 +2152,53 @@
   },
   {
    "id": "american-samoa",
-   "name": "American Samoa (US)",
-   "aliases": [],
+   "name": "American Samoa (United States)",
+   "aliases": [
+    "American Samoa"
+   ],
    "sovereign": "United States",
    "status": "dependency",
    "region": "oceania",
    "quiz": false,
    "units": [
     "ASM"
+   ]
+  },
+  {
+   "id": "german-micronesia",
+   "name": "German New Guinea island territories (Carolines, Marianas, Marshalls, Nauru)",
+   "aliases": [
+    "German Micronesia",
+    "Caroline Islands",
+    "Marshall Islands",
+    "Mariana Islands",
+    "Nauru",
+    "Palau"
+   ],
+   "sovereign": "German Empire",
+   "status": "dependency",
+   "region": "oceania",
+   "quiz": false,
+   "units": [
+    "FSM",
+    "MHL",
+    "PLW",
+    "MNP",
+    "NRU"
+   ]
+  },
+  {
+   "id": "guam",
+   "name": "Guam (United States)",
+   "aliases": [
+    "Guam"
+   ],
+   "sovereign": "United States",
+   "status": "dependency",
+   "region": "oceania",
+   "quiz": false,
+   "units": [
+    "GUM"
    ]
   },
   {
@@ -2383,10 +2292,11 @@
   },
   {
    "id": "french-polynesia",
-   "name": "French Polynesia (French Oceania)",
+   "name": "French Oceania",
    "aliases": [
-    "French Oceania",
-    "Tahiti"
+    "French Polynesia",
+    "Tahiti",
+    "Wallis and Futuna"
    ],
    "sovereign": "France",
    "status": "dependency",
@@ -2395,41 +2305,6 @@
    "units": [
     "PYF",
     "WLF"
-   ]
-  },
-  {
-   "id": "south-seas-mandate",
-   "name": "Japanese South Seas Mandate",
-   "aliases": [
-    "Nan'yō",
-    "Micronesia",
-    "Marshall Islands",
-    "Palau",
-    "Marianas"
-   ],
-   "sovereign": "Japan",
-   "status": "dependency",
-   "region": "oceania",
-   "quiz": false,
-   "units": [
-    "FSM",
-    "MHL",
-    "PLW",
-    "MNP"
-   ]
-  },
-  {
-   "id": "guam",
-   "name": "Guam (US territory)",
-   "aliases": [
-    "Guam"
-   ],
-   "sovereign": "United States",
-   "status": "dependency",
-   "region": "oceania",
-   "quiz": false,
-   "units": [
-    "GUM"
    ]
   }
  ]

@@ -10,6 +10,8 @@ HB="https://raw.githubusercontent.com/aourednik/historical-basemaps/master/geojs
 for f in ne_50m_admin_0_map_units ne_50m_admin_1_states_provinces ne_10m_admin_1_states_provinces; do
   [ -s "cache/$f.geojson" ] || curl -fsSL -o "cache/$f.geojson" "$NE/$f.geojson"
 done
-[ -s cache/world_1938.geojson ] || curl -fsSL -o cache/world_1938.geojson "$HB/world_1938.geojson"
+for y in 1914 1938; do
+  [ -s "cache/world_$y.geojson" ] || curl -fsSL -o "cache/world_$y.geojson" "$HB/world_$y.geojson"
+done
 ls -la cache
-echo "Now run: pip install shapely topojson && python3 tools/build_data.py"
+echo "Now run: pip install shapely topojson && python3 tools/build_data.py --year all"

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var WORLD = window.WORLD1940;
+  var DEFAULT_YEAR_ID = '1940';
 
   var els = {};
   var map = null;
@@ -12,12 +12,39 @@
   var feedbackTimeout = null;
   var hintTimeout = null;
 
-  var NOTES = window.NOTES1940 || {};
+  var currentYearId = null;
+  var WORLD = null;   // active snapshot: window.GEOMAPS[currentYearId]
+  var NOTES = {};      // active notes: window['NOTES' + currentYearId] || {}
   var noteTimeout = null;
 
   var lastRegionId = 'world';
   var lastIncludeSmall = false;
   var hasStartedOnce = false;
+
+  // ---------- registry helpers ----------
+
+  function registry() {
+    return window.GEOMAPS || {};
+  }
+
+  // Year ids ascending by meta.year, e.g. ["1914", "1940"].
+  function years() {
+    var reg = registry();
+    return Object.keys(reg).sort(function (a, b) {
+      return reg[a].meta.year - reg[b].meta.year;
+    });
+  }
+
+  function notesFor(yearId) {
+    return window['NOTES' + yearId] || {};
+  }
+
+  function pickDefaultYearId() {
+    var reg = registry();
+    if (reg[DEFAULT_YEAR_ID]) return DEFAULT_YEAR_ID;
+    var ys = years();
+    return ys.length ? ys[ys.length - 1] : null;
+  }
 
   // ---------- helpers ----------
 
@@ -192,6 +219,151 @@
     els.results.hidden = true;
   }
 
+  // ---------- year toggle ----------
+
+  function buildYearToggle() {
+    if (!els.yearToggle) return;
+    els.yearToggle.innerHTML = '';
+    var reg = registry();
+    years().forEach(function (yid) {
+      var meta = reg[yid].meta || {};
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'year-btn';
+      btn.setAttribute('data-year', yid);
+      btn.textContent = meta.label != null ? meta.label : yid;
+      var isActive = yid === currentYearId;
+      if (isActive) btn.className += ' is-active';
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      btn.addEventListener('click', function () {
+        setYear(yid);
+      });
+      els.yearToggle.appendChild(btn);
+    });
+  }
+
+  function updateYearToggleUI() {
+    if (!els.yearToggle) return;
+    var btns = els.yearToggle.querySelectorAll('.year-btn');
+    for (var i = 0; i < btns.length; i++) {
+      var b = btns[i];
+      var isActive = b.getAttribute('data-year') === currentYearId;
+      b.classList.toggle('is-active', isActive);
+      b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    }
+  }
+
+  function updateSubtitle() {
+    if (els.subtitle && WORLD && WORLD.meta) {
+      els.subtitle.textContent = WORLD.meta.title || '';
+    }
+  }
+
+  function resetHeaderToPreGame() {
+    els.promptName.textContent = 'Press Start';
+    els.counter.textContent = '0 / 0';
+    els.score.textContent = '0%';
+    els.timer.textContent = '00:00';
+  }
+
+  // ---------- app API ----------
+
+  function start(regionId, opts) {
+    opts = opts || {};
+    var includeSmall = !!opts.includeSmall;
+
+    var ids = WORLD.entities
+      .filter(function (e) {
+        return (regionId === 'world' || e.region === regionId) &&
+          (e.quiz || includeSmall);
+      })
+      .map(function (e) { return e.id; });
+
+    lastRegionId = regionId;
+    lastIncludeSmall = includeSmall;
+
+    hideResults();
+    setFeedback('');
+    hideNote();
+    if (hintTimeout) {
+      clearTimeout(hintTimeout);
+      hintTimeout = null;
+    }
+
+    game = window.GeoGame.create({ ids: ids, shuffle: true });
+
+    map.clearStates();
+    map.setHint(null);
+    map.zoomToRegion(regionId);
+    map.setInteractive(true);
+
+    renderPromptAndStats();
+    startTimer();
+
+    hasStartedOnce = true;
+    els.startBtn.textContent = 'Restart';
+  }
+
+  function currentId() {
+    return game ? game.current() : null;
+  }
+
+  function currentYear() {
+    return currentYearId;
+  }
+
+  // Switch the active map year. No-op if `yearId` is already active or unknown.
+  // Rebuilds the map from scratch, discards any in-progress game, repopulates
+  // the region select (keeping the current region when it still exists in the
+  // new snapshot, else falling back to "world"), and resets the header stats
+  // and any transient UI (note/feedback/results/hint) to the pre-game state.
+  function setYear(yearId) {
+    if (!yearId || yearId === currentYearId) return;
+    var reg = registry();
+    var nextData = reg[yearId];
+    if (!nextData) return;
+
+    // Abandon any in-progress game and transient UI state.
+    game = null;
+    stopTimer();
+    hideResults();
+    setFeedback('');
+    hideNote();
+    if (hintTimeout) {
+      clearTimeout(hintTimeout);
+      hintTimeout = null;
+    }
+
+    currentYearId = yearId;
+    WORLD = nextData;
+    NOTES = notesFor(yearId);
+
+    // Rebuild the map for the new snapshot.
+    if (map) map.destroy();
+    map = window.GeoMap.create(els.map, WORLD, {
+      onClick: onMapClick,
+      onHover: onMapHover
+    });
+    map.setInteractive(false);
+
+    // Repopulate the region select, preserving the current region when it
+    // still exists in the new snapshot, else falling back to "world". The
+    // "current region" is the live <select> value, not the possibly-stale
+    // lastRegionId bookkeeping var (which only tracks the last *started*
+    // game) -- the user may have changed the dropdown without starting.
+    var currentSelection = els.regionSelect.value;
+    var regions = WORLD.regions || [];
+    var stillExists = regions.some(function (r) { return r.id === currentSelection; });
+    var nextRegionId = stillExists ? currentSelection : 'world';
+    populateRegionSelect();
+    els.regionSelect.value = nextRegionId;
+    lastRegionId = els.regionSelect.value || nextRegionId;
+
+    resetHeaderToPreGame();
+    updateSubtitle();
+    updateYearToggleUI();
+  }
+
   // ---------- map event handlers ----------
 
   function onMapHover(/* idOrNull */) {
@@ -254,48 +426,6 @@
     }
   }
 
-  // ---------- app API ----------
-
-  function start(regionId, opts) {
-    opts = opts || {};
-    var includeSmall = !!opts.includeSmall;
-
-    var ids = WORLD.entities
-      .filter(function (e) {
-        return (regionId === 'world' || e.region === regionId) &&
-          (e.quiz || includeSmall);
-      })
-      .map(function (e) { return e.id; });
-
-    lastRegionId = regionId;
-    lastIncludeSmall = includeSmall;
-
-    hideResults();
-    setFeedback('');
-    hideNote();
-    if (hintTimeout) {
-      clearTimeout(hintTimeout);
-      hintTimeout = null;
-    }
-
-    game = window.GeoGame.create({ ids: ids, shuffle: true });
-
-    map.clearStates();
-    map.setHint(null);
-    map.zoomToRegion(regionId);
-    map.setInteractive(true);
-
-    renderPromptAndStats();
-    startTimer();
-
-    hasStartedOnce = true;
-    els.startBtn.textContent = 'Restart';
-  }
-
-  function currentId() {
-    return game ? game.current() : null;
-  }
-
   // ---------- wiring ----------
 
   function wireControls() {
@@ -351,11 +481,20 @@
     els.resultsSources = byId('results-sources');
     els.playAgainBtn = byId('play-again-btn');
     els.note = byId('note');
+    els.yearToggle = byId('year-toggle');
+    els.subtitle = byId('game-subtitle');
   }
 
   function init() {
     cacheEls();
+
+    currentYearId = pickDefaultYearId();
+    WORLD = registry()[currentYearId] || { meta: {}, regions: [], entities: [] };
+    NOTES = notesFor(currentYearId);
+
     populateRegionSelect();
+    updateSubtitle();
+    buildYearToggle();
 
     map = window.GeoMap.create(els.map, WORLD, {
       onClick: onMapClick,
@@ -365,6 +504,10 @@
 
     wireControls();
 
+    Object.defineProperty(window.GeoApp, 'data', {
+      get: function () { return WORLD; },
+      configurable: true
+    });
     Object.defineProperty(window.GeoApp, 'game', {
       get: function () { return game; },
       configurable: true
@@ -376,7 +519,9 @@
   }
 
   window.GeoApp = {
-    data: WORLD,
+    years: years,
+    currentYear: currentYear,
+    setYear: setYear,
     start: start,
     currentId: currentId
   };

@@ -29,6 +29,9 @@
   --miss-first: #ffb74d;
   --miss-second: #ffe082;
   --miss-revealed: #ef9a9a;
+
+  --seg-border: rgba(0, 0, 0, 0.2);
+  --seg-hover: rgba(0, 0, 0, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,6 +49,9 @@
 
     --accent: #42a5f5;
     --accent-hover: #64b5f6;
+
+    --seg-border: rgba(255, 255, 255, 0.25);
+    --seg-hover: rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -173,6 +179,61 @@ button {
   background: var(--card-bg);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   font-size: 0.85rem;
+}
+
+/* Year toggle: a segmented control, joined buttons sharing a border. */
+.year-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.year-btn {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.35em 0.8em;
+  margin: 0;
+  border: 1px solid var(--seg-border);
+  background: var(--card-bg);
+  color: var(--card-fg);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.year-btn + .year-btn {
+  border-left: none;
+}
+
+.year-btn:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.year-btn:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.year-btn:hover {
+  background: var(--seg-hover);
+}
+
+.year-btn.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.year-btn.is-active:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.year-btn:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 1px;
 }
 
 .control-field {

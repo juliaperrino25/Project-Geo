@@ -10,8 +10,8 @@
 <body>
 <header class="topbar">
   <div class="topbar-left">
-    <div class="game-title">World 1940</div>
-    <div class="game-subtitle">borders as of 1 Jan 1940</div>
+    <div class="game-title">World Map Quiz</div>
+    <div class="game-subtitle" id="game-subtitle">borders as of 1 Jan 1940</div>
   </div>
 
   <div class="topbar-center" aria-live="polite">
@@ -36,6 +36,8 @@
 </header>
 
 <div class="controls">
+  <div id="year-toggle" class="year-toggle" role="group" aria-label="Map year"></div>
+
   <label class="control-field">
     <span class="control-label">Region</span>
     <select id="region-select"></select>
@@ -77,7 +79,9 @@
   </div>
 </div>
 
+<script src="data/world1914.js"></script>
 <script src="data/world1940.js"></script>
+<script src="data/notes1914.js"></script>
 <script src="data/notes1940.js"></script>
 <script src="js/map.js"></script>
 <script src="js/game.js"></script>
