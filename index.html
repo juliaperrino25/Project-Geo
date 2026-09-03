@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World Map Quiz — 1940</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="game-title">World 1940</div>
+    <div class="game-subtitle">borders as of 1 Jan 1940</div>
+  </div>
+
+  <div class="topbar-center" aria-live="polite">
+    <span class="prompt-label">Click on:</span>
+    <strong id="prompt-name">Press Start</strong>
+  </div>
+
+  <div class="topbar-right">
+    <div class="stat">
+      <span class="stat-label">Progress</span>
+      <span class="stat-value" id="counter">0 / 0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Time</span>
+      <span class="stat-value" id="timer">00:00</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Score</span>
+      <span class="stat-value" id="score">0%</span>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <label class="control-field">
+    <span class="control-label">Region</span>
+    <select id="region-select"></select>
+  </label>
+
+  <label class="control-check">
+    <input type="checkbox" id="include-small">
+    Include small territories
+  </label>
+
+  <button type="button" id="start-btn" class="btn btn-primary">Start</button>
+
+  <div class="zoom-controls" role="group" aria-label="Zoom controls">
+    <button type="button" id="zoom-out" class="btn btn-icon" aria-label="Zoom out" title="Zoom out">−</button>
+    <button type="button" id="zoom-reset" class="btn btn-icon" aria-label="Reset zoom" title="Reset zoom">⤢</button>
+    <button type="button" id="zoom-in" class="btn btn-icon" aria-label="Zoom in" title="Zoom in">+</button>
+  </div>
+
+  <div id="feedback" class="feedback" aria-live="polite"></div>
+</div>
+
+<main id="map" class="map-area"></main>
+<div id="note" class="note" aria-live="polite" hidden></div>
+
+<div id="results" class="results-overlay" role="dialog" aria-modal="true" aria-labelledby="results-heading" hidden>
+  <div class="results-card">
+    <h2 id="results-heading">Game finished!</h2>
+    <div class="results-score" id="results-score">0%</div>
+    <div class="results-time">Time: <span id="results-time">00:00</span></div>
+
+    <div class="results-misses-wrap">
+      <h3>Missed on the first try</h3>
+      <ul id="results-misses" class="results-misses"></ul>
+    </div>
+
+    <button type="button" id="play-again-btn" class="btn btn-primary">Play again</button>
+
+    <p class="results-footer" id="results-sources"></p>
+  </div>
+</div>
+
+<script src="data/world1940.js"></script>
+<script src="data/notes1940.js"></script>
+<script src="js/map.js"></script>
+<script src="js/game.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

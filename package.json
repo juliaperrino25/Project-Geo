@@ -1,0 +1,14 @@
+{
+  "name": "world-1940-map-quiz",
+  "version": "0.1.0",
+  "description": "Seterra-style click-the-country geography quiz on a 1 January 1940 world map",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test:unit": "node --test test/game.test.js",
+    "test:e2e": "node test/e2e.js",
+    "test": "npm run test:unit && npm run test:e2e",
+    "serve": "npx http-server -p 8080 -c-1 ."
+  },
+  "license": "MIT"
+}
