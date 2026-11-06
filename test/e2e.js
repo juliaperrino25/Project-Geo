@@ -772,6 +772,46 @@ async function testYearToggle(page, baseUrl) {
 }
 
 // ---------------------------------------------------------------------------
+// Scenario: sovereign-states-only quiz set (1940 / World)
+// ---------------------------------------------------------------------------
+
+async function testSovereignOnly(page) {
+  await switchYear(page, '1940');
+  await page.selectOption('#region-select', 'world');
+  await page.selectOption('#quiz-set', 'sovereign');
+  await page.click('#start-btn');
+  await page.waitForFunction(
+    () => !!(window.GeoApp.game && window.GeoApp.currentId() !== null),
+    null, { timeout: 10000 }
+  );
+
+  const expected = await page.evaluate(
+    () => window.GEOMAPS['1940'].entities.filter((e) => e.status === 'sovereign' && e.quiz === true).length
+  );
+  const counterText = (await page.locator('#counter').innerText()).trim();
+  const nums = (counterText.match(/\d+/g) || []).map(Number);
+  assert.strictEqual(nums[1], expected, `sovereign-only counter total should be ${expected}, got "${counterText}"`);
+  const order = await page.evaluate(() => window.GeoApp.game.order());
+  assert.strictEqual(order.length, expected, `sovereign-only order length ${order.length} != ${expected}`);
+  const nonSov = await page.evaluate(
+    (ids) => ids.filter((id) => window.GeoApp.data.entities.find((e) => e.id === id).status !== 'sovereign'),
+    order
+  );
+  assert.deepStrictEqual(nonSov, [], 'sovereign-only game contains non-sovereign entities');
+
+  await playToCompletion(page, 'sovereign-only game (1940)');
+  const scoreText = (await page.locator('#results-score').innerText()).trim();
+  assert.ok(scoreText.includes('100%'), `expected 100%, got "${scoreText}"`);
+
+  // Play again keeps the quiz set.
+  await page.click('#play-again-btn');
+  const total2 = await page.evaluate(() => window.GeoApp.game.order().length);
+  assert.strictEqual(total2, expected, `play again should keep the sovereign set (${expected}), got ${total2}`);
+
+  await page.selectOption('#quiz-set', 'all');
+}
+
+// ---------------------------------------------------------------------------
 // Test runner
 // ---------------------------------------------------------------------------
 
@@ -824,6 +864,7 @@ async function main() {
       ['wrong answers and reveal', () => testWrongAnswersAndReveal(page)],
       ['region game', () => testRegionGame(page)],
       ['year toggle', () => testYearToggle(page, baseUrl)],
+      ['sovereign-only quiz set', () => testSovereignOnly(page)],
     ];
 
     for (const [name, fn] of scenarios) {

@@ -17,6 +17,8 @@ made.
 * 159 territories drawn on the 1940 map, 130 of them in the default quiz
   (microstates and small islands are drawn but only asked when *Include small
   territories* is ticked); see `docs/HISTORY.md` for the 1914 map's coverage.
+* A *Quiz set* selector switches between all countries and territories and
+  sovereign states only (applies on the next Start / Play again).
 * Seterra scoring: green on the first try, yellow on the second, orange on the
   third; after three misses the answer is revealed in red. Score is the share
   of first-try answers. There is a timer, a region selector (World, Europe,
