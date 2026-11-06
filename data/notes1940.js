@@ -45,11 +45,11 @@ window.NOTES1940 = {
     extraAliases: ["Republic of Lithuania", "Baltic", "Vilnius"]
   },
   "germany": {
-    note: "Nazi Germany under Adolf Hitler, at war with Britain and France since 3 September 1939. Has absorbed Austria (March 1938), the Sudetenland (October 1938), Bohemia and Moravia (a Protectorate from March 1939) and Memel (March 1939), and with the USSR partitioned Poland in September 1939.",
+    note: "Nazi Germany under Adolf Hitler, at war with Britain and France since 3 September 1939. Has absorbed Austria (March 1938), the Sudetenland (October 1938), Bohemia and Moravia (a Protectorate from March 1939), Memel (March 1939) and, in October 1939, western Poland (Wartheland, Danzig-West Prussia, East Upper Silesia, Zichenau), while the USSR took eastern Poland.",
     extraAliases: ["Nazi Germany", "Third Reich", "Deutsches Reich"]
   },
   "general-government": {
-    note: "German-occupied Poland after the German-Soviet partition of September 1939. Western Poland was annexed to the Reich in October 1939 (shown here with the rest); the General Government under Hans Frank was set up in central Poland in October 1939. The Polish government-in-exile sits in France.",
+    note: "German-occupied Poland: the General Government under Hans Frank, set up in October 1939 around Warsaw, Kraków, Radom and Lublin. Western and northern Poland (Wartheland, Danzig-West Prussia, East Upper Silesia, Zichenau) was annexed to the Reich and is drawn as Germany. The Polish government-in-exile sits in France.",
     extraAliases: ["Occupied Poland", "Generalgouvernement", "Poland"]
   },
   "slovakia": {
@@ -261,7 +261,7 @@ window.NOTES1940 = {
     extraAliases: ["China", "Republic of China", "Nationalist China", "Chinese Republic"]
   },
   "manchukuo": {
-    note: "Japanese puppet state in Manchuria since 1932, under Emperor Puyi. Nominally independent but run by Japan's Kwantung Army; recognised by Axis and a few other states.",
+    note: "Japanese puppet state in Manchuria since 1932, under Emperor Puyi. Nominally independent but run by Japan's Kwantung Army; its territory includes Jehol (annexed 1933) and eastern Inner Mongolia, drawn here approximately.",
     extraAliases: ["Manchukuo", "Manchuria", "Manchoukuo"]
   },
   "tibet": {
@@ -309,7 +309,7 @@ window.NOTES1940 = {
     extraAliases: ["Algeria", "French Algeria", "Algérie française"]
   },
   "french-morocco": {
-    note: "French protectorate since 1912 under Sultan Mohammed V. Passes to Vichy control after June 1940.",
+    note: "French protectorate since 1912 under Sultan Mohammed V, up to the Spanish zone and the Spanish Sahara border at about 27.67N. Passes to Vichy control after June 1940.",
     extraAliases: ["Morocco", "French Morocco"]
   },
   "spanish-morocco": {
@@ -317,7 +317,7 @@ window.NOTES1940 = {
     extraAliases: ["Spanish Morocco", "Spanish Protectorate"]
   },
   "spanish-sahara": {
-    note: "Spanish colonial possession in northwest Africa. Sparsely populated desert territory.",
+    note: "Spanish colonial territory in north-west Africa (Río de Oro and Saguia el-Hamra), the whole of modern Western Sahara; sparsely populated desert coast.",
     extraAliases: ["Spanish Sahara", "Río de Oro", "Western Sahara"]
   },
   "spanish-guinea": {

@@ -170,7 +170,7 @@ To keep the quiz playable while respecting 1940 borders, the map makes these int
 
 1. **Bohemia-Moravia and Sudetenland** are shown as integral parts of Germany (absorbed March 1939)
 
-2. **German-held Poland** is shown as one **General Government** entity, even though western Poland was annexed to the Reich in October 1939 and only the central part was the General Government proper; the Soviet-annexed east (Sept 1939) is shown as part of the Soviet Union
+2. **Poland** is divided on the 1939 German-Soviet line. The General Government is approximated by the voivodeships of Mazovia (minus the northern Zichenau strip), Lublin, Świętokrzyskie, Lesser Poland, Subcarpathia and eastern Łódź; the rest of German-held Poland (Wartheland, Danzig-West Prussia, East Upper Silesia, Zichenau, Suwałki) is drawn as Germany, and the Soviet-annexed east is part of the Soviet Union
 
 3. **Japanese-occupied China** (Manchukuo, Kwantung Leased Territory, and zones of occupation) is shown simply as **China**, with Manchukuo as a separate puppet state
 
@@ -187,6 +187,10 @@ To keep the quiz playable while respecting 1940 borders, the map makes these int
 9. **Greater Romania** is shown with Bessarabia, Northern Bukovina and Southern Dobruja, all still Romanian; they are ceded to the Soviet Union (June 1940) and Bulgaria (September 1940)
 
 10. **Vilnius** is shown as part of Lithuania (transferred from Soviet-occupied Poland in October 1939, shortly before this snapshot)
+
+11. **Manchukuo** includes Jehol and the eastern leagues of Inner Mongolia, approximated by lon/lat cuts on the modern Hebei and Inner Mongolia provinces (Inner Mongolia east of 116.8E, Hebei north of 40.6N and east of 116.7E)
+
+12. **Spanish Sahara** is the whole of modern Western Sahara (south of 27.67N); French Morocco ends there
 
 ## Known Limitations
 

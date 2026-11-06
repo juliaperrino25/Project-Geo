@@ -33,6 +33,7 @@ CACHE = os.environ.get("GEO_CACHE", os.path.join(HERE, "cache"))
 WIDTH = 1000.0
 LAT_MIN, LAT_MAX = -58.0, 84.0           # Antarctica is not drawn
 SIMPLIFY_PX = float(os.environ.get("GEO_SIMPLIFY_PX", "0.12"))
+MIN_HOLE_AREA = 0.015                     # deg², drop lake holes below this
 MIN_PART_AREA = 0.008                     # deg², drop specks below this
 SLIVER_AREA, SLIVER_RATIO = 0.05, 0.003   # thin-part filter
 CUT_BUFFER = 0.03                         # deg, grows a period cutter just past
@@ -70,7 +71,7 @@ for f in load("ne_50m_admin_1_states_provinces.geojson")["features"]:
 A10 = {}
 for f in load("ne_10m_admin_1_states_provinces.geojson")["features"]:
     p = f["properties"]
-    if p["adm0_a3"] in ("YEM", "MAR", "CMR", "UKR"):
+    if p["adm0_a3"] in ("YEM", "MAR", "CMR", "UKR", "POL"):
         A10[(p["adm0_a3"], p["name"])] = fix(shape(f["geometry"]))
 
 def load_period(filename, split_italy=False):
@@ -211,7 +212,22 @@ def specials_1940():
                (22.85, 49.0), (22.9, 48.5)]
     west_of_mr = Polygon(mr_line + [(22.9, 47.0), (13.0, 47.0), (13.0, 56.5), (23.5, 56.5)])
     occupied_pl = U("POL").intersection(pol_1938)
-    SP["occupied_poland_west_of_mr_line"] = occupied_pl.intersection(west_of_mr)
+    # General Government proper: the Warsaw, Radom, Krakow and Lublin districts,
+    # approximated by voivodeships (Masovia minus the Zichenau strip, Lublin,
+    # Swietokrzyskie, Lesser Poland, Subcarpathia and eastern Lodz). Everything
+    # else west of the Soviet line (Wartheland, Danzig-West Prussia, East Upper
+    # Silesia, Zichenau, Suwalki) was annexed to the Reich in October 1939.
+    zichenau = Polygon([(18.0, 52.40), (20.6, 52.45), (21.4, 52.65), (24.0, 52.65),
+                        (24.0, 55.0), (18.0, 55.0)])
+    gg_zone = unary_union([
+        A10u("POL", "Masovian").difference(zichenau),
+        A10u("POL", "Lublin", "Świętokrzyskie", "Lesser Poland", "Subcarpathian"),
+        A10u("POL", "Łódź").intersection(box(19.6, 50.0, 21.5, 52.1)),
+    ]).buffer(CUT_BUFFER)
+    west_pl = occupied_pl.intersection(west_of_mr)
+    SP["occupied_poland_west_of_mr_line"] = west_pl.intersection(gg_zone)
+    SP["former_german_east_from_poland"] = unary_union(
+        [SP["former_german_east_from_poland"], west_pl.difference(gg_zone)])
     soviet_pl = occupied_pl.difference(west_of_mr)
 
     # Slovakia after the First Vienna Award
@@ -227,8 +243,23 @@ def specials_1940():
         soviet_pl,
     ]).difference(SP["finland_ceded_1940"])
 
-    SP["manchuria"] = A50u("CHN", "Liaoning", "Jilin", "Heilongjiang")
-    SP["china_proper"] = A50_except("CHN", "Liaoning", "Jilin", "Heilongjiang", "Xizang")
+    # Manchukuo (1933 borders) also held Jehol (Chengde, Chifeng) and the eastern
+    # leagues of Inner Mongolia (Hulunbuir, Hinggan, Tongliao): cut on lon/lat boxes.
+    manch_extra = unary_union([
+        A50u("CHN", "Inner Mongol").intersection(box(116.8, 41.0, 135.0, 54.0)),
+        A50u("CHN", "Hebei").intersection(box(116.7, 40.6, 125.0, 45.0)),
+    ])
+    SP["manchuria"] = unary_union([A50u("CHN", "Liaoning", "Jilin", "Heilongjiang"),
+                                   manch_extra])
+    SP["china_proper"] = unary_union(
+        [A50_except("CHN", "Liaoning", "Jilin", "Heilongjiang", "Xizang")]
+    ).difference(manch_extra)
+
+    # Spanish Sahara = the whole of modern Western Sahara (Natural Earth lumps the
+    # Moroccan-administered part into MAR): everything south of 27.67N.
+    ws_cut = box(-18.0, 20.0, -8.0, 27.67)
+    SP["spanish_sahara_1940"] = unary_union([U("SAH"), U("MAR").intersection(ws_cut)])
+    SP["french_morocco"] = SP["french_morocco"].difference(ws_cut)
     SP["yemen_north"] = U("YEM").difference(south_yemen)
 
     # The British Cameroons, administered with Nigeria
@@ -371,7 +402,8 @@ def clean(g):
             continue
         if a < SLIVER_AREA and a / (p.length ** 2) < SLIVER_RATIO:
             continue
-        keep.append(p)
+        keep.append(Polygon(p.exterior,
+                            [r for r in p.interiors if Polygon(r).area >= MIN_HOLE_AREA]))
     return MultiPolygon(keep) if keep else Polygon()
 
 def fmt(v):
@@ -462,8 +494,10 @@ def build_year(yid):
     out_entities, total_pts = [], 0
     for e, gp in projected:
         g = fix(by_id.get(e["id"]) or gp)
-        polys = [p for p in (g.geoms if g.geom_type == "MultiPolygon" else [g])
-                 if p.area > 0.0005]
+        # drop hairline slivers (< 0.01 viewBox units²) and lake holes < 0.1 units²
+        polys = [Polygon(p.exterior, [r for r in p.interiors if Polygon(r).area >= 0.1])
+                 for p in (g.geoms if g.geom_type == "MultiPolygon" else [g])
+                 if p.area > 0.01]
         if not polys:
             log(f"  dropping {e['id']}: empty after simplification")
             continue
