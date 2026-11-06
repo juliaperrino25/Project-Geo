@@ -127,6 +127,7 @@ This snapshot is a frozen moment before the Blitzkrieg reshapes Europe and the P
 | Hungary | Hungary + southern Slovakia (First Vienna Award) + Carpathian Ruthenia (Zakarpattia, Ukraine) |
 | Soviet Union | Russia (minus Kaliningrad, Tuva, South Sakhalin and the Kurils) + Ukraine, Belarus, the Caucasus and Central Asia + eastern Poland |
 | Yugoslavia | Serbia, Croatia, Bosnia, Montenegro, Macedonia, Slovenia |
+| Albania (Italian-ruled) | Albania (invaded April 1939; crown in personal union with Italy) |
 | Greater Romania | Romania + Moldova (Bessarabia) + Chernivtsi region of Ukraine (Northern Bukovina) + Southern Dobruja (Bulgaria) — all lost in mid-1940 |
 | Baltic States (Estonia, Latvia, Lithuania) | Independent; will be Soviet 1940, then independent again 1991 |
 | Finland | Slightly larger; Winter War ongoing; cedes territory to USSR by March 1940 |
@@ -143,6 +144,8 @@ This snapshot is a frozen moment before the Blitzkrieg reshapes Europe and the P
 | Transjordan (British mandate) | Jordan |
 | Burma | Myanmar (separated from India in 1937) |
 | French Somaliland | Djibouti |
+| Aden Colony and Protectorate (British) | Southern Yemen (Aden a Crown colony since 1937) |
+| Tannu Tuva | Tuva Republic of Russia (a nominally independent Soviet-aligned republic until annexed in 1944) |
 
 #### Africa
 | 1940 Entity | Modern Countries Covered |
@@ -157,7 +160,7 @@ This snapshot is a frozen moment before the Blitzkrieg reshapes Europe and the P
 #### Americas & Oceania
 | 1940 Entity | Modern Countries Covered |
 |---|---|
-| Newfoundland | Now part of Canada (joined 1949) |
+| Newfoundland (British, Commission of Government) | Now part of Canada (joined 1949); self-government suspended since 1934 |
 | British Guiana | Guyana |
 | Dutch Guiana | Suriname |
 
@@ -167,7 +170,7 @@ To keep the quiz playable while respecting 1940 borders, the map makes these int
 
 1. **Bohemia-Moravia and Sudetenland** are shown as integral parts of Germany (absorbed March 1939)
 
-2. **Polish territories** annexed by Germany and the USSR are shown as one **General Government** entity, even though they had different administrative status
+2. **German-held Poland** is shown as one **General Government** entity, even though western Poland was annexed to the Reich in October 1939 and only the central part was the General Government proper; the Soviet-annexed east (Sept 1939) is shown as part of the Soviet Union
 
 3. **Japanese-occupied China** (Manchukuo, Kwantung Leased Territory, and zones of occupation) is shown simply as **China**, with Manchukuo as a separate puppet state
 
@@ -181,9 +184,9 @@ To keep the quiz playable while respecting 1940 borders, the map makes these int
 
 8. **Memel** (transferred from Lithuania to Germany in March 1939) is shown as part of Germany
 
-9. **Greater Romania** is shown with Bessarabia, Bukovina, and Southern Dobruja—territories Romania will be forced to cede to the Soviet Union and Bulgaria in June 1940
+9. **Greater Romania** is shown with Bessarabia, Northern Bukovina and Southern Dobruja, all still Romanian; they are ceded to the Soviet Union (June 1940) and Bulgaria (September 1940)
 
-10. **Vilnius** is shown as part of Lithuania (transferred October 1939, shortly before this snapshot)
+10. **Vilnius** is shown as part of Lithuania (transferred from Soviet-occupied Poland in October 1939, shortly before this snapshot)
 
 ## Known Limitations
 

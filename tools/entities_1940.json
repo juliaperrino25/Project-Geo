@@ -169,7 +169,13 @@
     "German Reich",
     "Greater German Reich",
     "Third Reich",
-    "Nazi Germany"
+    "Nazi Germany",
+    "Austria",
+    "Czechia",
+    "Bohemia and Moravia",
+    "Sudetenland",
+    "Danzig",
+    "Memel"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -327,7 +333,9 @@
    "name": "Italy",
    "aliases": [
     "Kingdom of Italy",
-    "Fascist Italy"
+    "Fascist Italy",
+    "Vatican City",
+    "Vatican"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -410,9 +418,10 @@
   },
   {
    "id": "albania",
-   "name": "Albania (Italian protectorate)",
+   "name": "Albania (Italian-ruled)",
    "aliases": [
-    "Albania"
+    "Albania",
+    "Kingdom of Albania"
    ],
    "sovereign": "Italy",
    "status": "dependency",
@@ -472,7 +481,9 @@
    "aliases": [
     "USSR",
     "Union of Soviet Socialist Republics",
-    "Russia"
+    "Russia",
+    "Ukraine",
+    "Belarus"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -515,7 +526,8 @@
    "id": "turkey",
    "name": "Turkey",
    "aliases": [
-    "Republic of Turkey"
+    "Republic of Turkey",
+    "Türkiye"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -603,7 +615,9 @@
    "id": "saudi-arabia",
    "name": "Saudi Arabia",
    "aliases": [
-    "Kingdom of Saudi Arabia"
+    "Kingdom of Saudi Arabia",
+    "Hejaz",
+    "Nejd"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -630,11 +644,12 @@
   },
   {
    "id": "aden",
-   "name": "Aden Protectorate (British)",
+   "name": "Aden Colony and Protectorate (British)",
    "aliases": [
     "Aden",
     "South Arabia",
-    "Hadhramaut"
+    "Hadhramaut",
+    "South Yemen"
    ],
    "sovereign": "United Kingdom",
    "status": "dependency",
@@ -751,7 +766,9 @@
    "aliases": [
     "India",
     "British Raj",
-    "Indian Empire"
+    "Indian Empire",
+    "Pakistan",
+    "Bangladesh"
    ],
    "sovereign": "United Kingdom",
    "status": "dependency",
@@ -1012,7 +1029,8 @@
    "name": "Tannu Tuva",
    "aliases": [
     "Tuvan People's Republic",
-    "Tuva"
+    "Tuva",
+    "Tannu-Tuva"
    ],
    "sovereign": null,
    "status": "sovereign",
@@ -1212,7 +1230,8 @@
     "Abyssinia",
     "Eritrea",
     "Italian Somaliland",
-    "Africa Orientale Italiana"
+    "Africa Orientale Italiana",
+    "Somalia"
    ],
    "sovereign": "Italy",
    "status": "dependency",
@@ -1418,7 +1437,8 @@
    "id": "belgian-congo",
    "name": "Belgian Congo",
    "aliases": [
-    "Congo"
+    "Congo",
+    "DR Congo"
    ],
    "sovereign": "Belgium",
    "status": "dependency",
@@ -1732,7 +1752,7 @@
   },
   {
    "id": "newfoundland",
-   "name": "Newfoundland (British dominion)",
+   "name": "Newfoundland (British, Commission of Government)",
    "aliases": [
     "Newfoundland",
     "Dominion of Newfoundland",
