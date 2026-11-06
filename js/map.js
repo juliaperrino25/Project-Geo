@@ -10,6 +10,8 @@
   var FLASH_MS = 1000;
   var DRAG_THRESHOLD = 4; // px, beyond this a pointerdown->pointerup is a drag, not a click
   var DBLCLICK_ZOOM_FACTOR = 1.6;
+  var TINY_BBOX = 8;   // viewBox units: entities with both bbox sides <= this get a hit stroke
+  var HIT_PX = 14;     // screen px width of the invisible hit stroke
 
   function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
 
@@ -89,6 +91,33 @@
     }
     g.appendChild(pathFrag);
 
+    // Tiny territories (Malta, Bahrain, ...) are only a pixel or two wide at
+    // world zoom. Give them an invisible, non-scaling hit stroke (drawn
+    // beneath the visible paths, in its own group) so they have a minimum ~HIT_PX pointer target
+    // without changing the visible stroke. Hits carry the same data-id.
+    var hitG = document.createElementNS(SVG_NS, 'g');
+    hitG.setAttribute('class', 'hit-targets');
+    var hitFrag = document.createDocumentFragment();
+    for (var hi = 0; hi < entities.length; hi++) {
+      var he = entities[hi];
+      var bb = he.bbox;
+      if (!bb || Math.max(bb[2] - bb[0], bb[3] - bb[1]) > TINY_BBOX) continue;
+      var hp = document.createElementNS(SVG_NS, 'path');
+      hp.setAttribute('class', 'hit');
+      hp.setAttribute('data-id', he.id);
+      hp.setAttribute('d', he.path);
+      hp.setAttribute('vector-effect', 'non-scaling-stroke');
+      hp.setAttribute('fill', 'none');
+      hp.setAttribute('stroke', 'transparent');
+      hp.setAttribute('stroke-width', String(HIT_PX));
+      hp.setAttribute('stroke-linejoin', 'round');
+      hp.style.pointerEvents = 'all';
+      hp.style.cursor = 'pointer';
+      hitFrag.appendChild(hp);
+    }
+    hitG.appendChild(hitFrag);
+    g.insertBefore(hitG, g.firstChild); // beneath the visible paths: never steals a neighbour's click
+
     frag.appendChild(svg);
     containerEl.appendChild(frag);
 
@@ -124,16 +153,20 @@
 
     // --- Animated transition from current view to a target view. ---
     var animRAF = null;
+    var animTarget = null; // destination of the in-flight animation, if any
     function animateTo(target, ms) {
       if (animRAF) {
         cancelAnimationFrame(animRAF);
         animRAF = null;
       }
       var start = view.slice();
+      target = clampView(target);
+      animTarget = target.slice();
       var t0 = null;
       var duration = ms == null ? ZOOM_ANIM_MS : ms;
       if (duration <= 0) {
-        view = clampView(target);
+        view = target;
+        animTarget = null;
         applyViewBox();
         return;
       }
@@ -152,6 +185,7 @@
           animRAF = requestAnimationFrame(step);
         } else {
           animRAF = null;
+          animTarget = null;
         }
       }
       animRAF = requestAnimationFrame(step);
@@ -301,17 +335,19 @@
     }
 
     function zoomBy(factor) {
-      var cx = view[0] + view[2] / 2;
-      var cy = view[1] + view[3] / 2;
-      animateTo((function () {
-        var newW = clamp(view[2] / factor, W / MAX_ZOOM, W / MIN_ZOOM);
-        var newH = newW * (H / W);
-        return clampView([cx - newW / 2, cy - newH / 2, newW, newH]);
-      })());
+      // Rapid presses compound on the in-flight destination, not the
+      // half-animated view.
+      var base = animTarget || view;
+      var cx = base[0] + base[2] / 2;
+      var cy = base[1] + base[3] / 2;
+      var newW = clamp(base[2] / factor, W / MAX_ZOOM, W / MIN_ZOOM);
+      var newH = newW * (H / W);
+      animateTo([cx - newW / 2, cy - newH / 2, newW, newH]);
     }
 
     function setInteractive(v) {
       interactive = !!v;
+      if (!interactive) clearHover();
     }
 
     // --- Coordinate helpers ---
@@ -353,87 +389,171 @@
       if (destroyed) return;
       e.preventDefault();
       var pt = clientToViewBox(e.clientX, e.clientY);
-      var factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
-      if (animRAF) { cancelAnimationFrame(animRAF); animRAF = null; }
+      var dy = e.deltaY;
+      if (e.deltaMode === 1) dy *= 16; else if (e.deltaMode === 2) dy *= 400;
+      var factor = Math.exp(-clamp(dy, -200, 200) * 0.0025);
+      if (animRAF) { cancelAnimationFrame(animRAF); animRAF = null; animTarget = null; }
       zoomAroundPoint(factor, pt.x, pt.y);
     }
     svg.addEventListener('wheel', onWheel, { passive: false });
 
-    // --- Interaction: drag to pan, click-vs-drag detection ---
-    var dragState = null; // { pointerId, startClientX, startClientY, startView, moved, targetId }
+    // --- Interaction: drag to pan, pinch to zoom, click-vs-drag detection ---
+    var pointers = Object.create(null); // pointerId -> {x, y} (client px)
+    var dragState = null; // { pointerId, startClientX, startClientY, startView, moved, captured }
+    var pinch = null;     // { ids:[a,b], startDist, startView, anchorX, anchorY }
+
+    function pointerIds() { return Object.keys(pointers); }
+    function tryCapture(id) {
+      try { svg.setPointerCapture(id); } catch (err) { /* ignore */ }
+    }
+    function tryRelease(id) {
+      try { svg.releasePointerCapture(id); } catch (err) { /* ignore */ }
+    }
+    function nowMs() { return typeof performance !== 'undefined' ? performance.now() : Date.now(); }
+
+    function startPinch() {
+      var ids = pointerIds();
+      if (ids.length < 2) return;
+      var a = pointers[ids[0]], b = pointers[ids[1]];
+      var mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      if (animRAF) { cancelAnimationFrame(animRAF); animRAF = null; animTarget = null; }
+      // A drag turning into a pinch must not count as a click later.
+      if (dragState) { dragState.moved = true; }
+      tryCapture(Number(ids[0])); tryCapture(Number(ids[1]));
+      var anchor = clientToViewBox(mid.x, mid.y);
+      pinch = {
+        ids: [ids[0], ids[1]],
+        startDist: Math.max(Math.hypot(a.x - b.x, a.y - b.y), 1),
+        startView: view.slice(),
+        anchorX: anchor.x,
+        anchorY: anchor.y
+      };
+    }
+
+    function updatePinch() {
+      var a = pointers[pinch.ids[0]], b = pointers[pinch.ids[1]];
+      if (!a || !b) return;
+      var dist = Math.max(Math.hypot(a.x - b.x, a.y - b.y), 1);
+      var mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      var sv = pinch.startView;
+      var newW = clamp(sv[2] * pinch.startDist / dist, W / MAX_ZOOM, W / MIN_ZOOM);
+      var newH = newW * (H / W);
+      // Keep the world point first pinched under the fingers' midpoint.
+      var rect = svg.getBoundingClientRect();
+      var scale = Math.min(rect.width / newW, rect.height / newH);
+      var offX = (rect.width - newW * scale) / 2;
+      var offY = (rect.height - newH * scale) / 2;
+      var nx = pinch.anchorX - (mid.x - rect.left - offX) / scale;
+      var ny = pinch.anchorY - (mid.y - rect.top - offY) / scale;
+      view = clampView([nx, ny, newW, newH]);
+      applyViewBox();
+    }
+
+    function endPinch() {
+      if (!pinch) return;
+      pinch = null;
+      suppressClickUntil = nowMs() + 100;
+      // Continue as a one-finger pan with any remaining pointer.
+      var rest = pointerIds();
+      dragState = null;
+      if (rest.length === 1) {
+        var p = pointers[rest[0]];
+        dragState = {
+          pointerId: Number(rest[0]), startClientX: p.x, startClientY: p.y,
+          startView: view.slice(), moved: true, captured: true
+        };
+      } else {
+        svg.style.cursor = 'grab';
+      }
+    }
 
     function onPointerDown(e) {
       if (destroyed) return;
-      if (e.button != null && e.button !== 0) return;
-      var targetId = e.target && e.target.getAttribute ? e.target.getAttribute('data-id') : null;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      clearHover();
+      pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+      if (animRAF) { cancelAnimationFrame(animRAF); animRAF = null; animTarget = null; }
+      if (pointerIds().length >= 2) {
+        if (!pinch) startPinch();
+        return;
+      }
       dragState = {
         pointerId: e.pointerId,
         startClientX: e.clientX,
         startClientY: e.clientY,
         startView: view.slice(),
         moved: false,
-        captured: false,
-        targetId: targetId
+        captured: false
       };
-      // Note: pointer capture is deliberately NOT taken here. Capturing
-      // immediately on pointerdown causes Chromium to retarget the
-      // subsequent synthetic 'click' event to the capturing element (the
-      // <svg>) instead of the country <path> under the cursor, which would
-      // break plain click detection. We only capture once a real drag has
-      // started (see onPointerMove).
+      // Pointer capture is deliberately NOT taken here: capturing on
+      // pointerdown makes Chromium retarget the synthetic 'click' to the
+      // <svg> instead of the country <path>. We capture once a real drag
+      // has started (see onPointerMove).
       svg.style.cursor = 'grabbing';
     }
 
     function onPointerMove(e) {
-      if (destroyed || !dragState || e.pointerId !== dragState.pointerId) return;
+      if (destroyed) return;
+      // Mouse button released outside the window/iframe: the pointerup never
+      // arrived, so end the stuck drag instead of panning with no button down.
+      if (e.pointerType === 'mouse' && e.buttons === 0 && (dragState || pointers[e.pointerId])) {
+        onPointerCancel(e);
+        return;
+      }
+      if (pointers[e.pointerId]) {
+        pointers[e.pointerId].x = e.clientX;
+        pointers[e.pointerId].y = e.clientY;
+      }
+      if (pinch) { updatePinch(); return; }
+      if (!dragState || e.pointerId !== dragState.pointerId) return;
       var dxClient = e.clientX - dragState.startClientX;
       var dyClient = e.clientY - dragState.startClientY;
       if (!dragState.moved && Math.sqrt(dxClient * dxClient + dyClient * dyClient) > DRAG_THRESHOLD) {
         dragState.moved = true;
+        clearHover();
         if (!dragState.captured) {
-          try {
-            svg.setPointerCapture(e.pointerId);
-            dragState.captured = true;
-          } catch (err) { /* ignore */ }
+          tryCapture(e.pointerId);
+          dragState.captured = true;
         }
       }
       if (!dragState.moved) return;
       var rect = svg.getBoundingClientRect();
       var scale = Math.min(rect.width / dragState.startView[2], rect.height / dragState.startView[3]);
       if (scale <= 0) return;
-      var dx = dxClient / scale;
-      var dy = dyClient / scale;
       var v = dragState.startView;
-      view = clampView([v[0] - dx, v[1] - dy, v[2], v[3]]);
+      view = clampView([v[0] - dxClient / scale, v[1] - dyClient / scale, v[2], v[3]]);
       applyViewBox();
     }
 
+    function inPinch(id) { return pinch && (id + '' === pinch.ids[0] || id + '' === pinch.ids[1]); }
+
     function onPointerUp(e) {
-      if (destroyed || !dragState || e.pointerId !== dragState.pointerId) return;
-      var wasDrag = dragState.moved;
-      if (dragState.captured) {
-        try {
-          svg.releasePointerCapture(e.pointerId);
-        } catch (err) { /* ignore */ }
+      if (destroyed) return;
+      var had = !!pointers[e.pointerId];
+      delete pointers[e.pointerId];
+      if (inPinch(e.pointerId)) {
+        tryRelease(e.pointerId);
+        endPinch();
+        return;
       }
+      if (!had || !dragState || e.pointerId !== dragState.pointerId) return;
+      var wasDrag = dragState.moved;
+      if (dragState.captured) tryRelease(e.pointerId);
       svg.style.cursor = 'grab';
       dragState = null;
-      // Click handling happens on the delegated 'click' listener below, but we
-      // must suppress it when this was a drag. We do this by flagging a short
-      // "suppress next click" window, since browsers fire a native click after
-      // pointerup/mouseup even after a drag.
-      if (wasDrag) {
-        suppressClickUntil = (typeof performance !== 'undefined' ? performance.now() : Date.now()) + 50;
-      }
+      // The browser still fires a native click after a drag; suppress it.
+      if (wasDrag) suppressClickUntil = nowMs() + 50;
     }
 
     function onPointerCancel(e) {
-      if (!dragState || e.pointerId !== dragState.pointerId) return;
-      if (dragState.captured) {
-        try {
-          svg.releasePointerCapture(e.pointerId);
-        } catch (err) { /* ignore */ }
+      delete pointers[e.pointerId];
+      if (inPinch(e.pointerId)) {
+        tryRelease(e.pointerId);
+        endPinch();
+        return;
       }
+      if (!dragState || e.pointerId !== dragState.pointerId) return;
+      if (dragState.captured) tryRelease(e.pointerId);
       svg.style.cursor = 'grab';
       dragState = null;
     }
@@ -447,7 +567,7 @@
     function onDblClick(e) {
       if (destroyed || !interactive) return;
       var pt = clientToViewBox(e.clientX, e.clientY);
-      if (animRAF) { cancelAnimationFrame(animRAF); animRAF = null; }
+      if (animRAF) { cancelAnimationFrame(animRAF); animRAF = null; animTarget = null; }
       zoomAroundPoint(DBLCLICK_ZOOM_FACTOR, pt.x, pt.y);
     }
     svg.addEventListener('dblclick', onDblClick);
@@ -463,34 +583,51 @@
       if (!target || !target.getAttribute) return;
       var id = target.getAttribute('data-id');
       if (!id) return;
+      clearHover();
       onClick(id);
     }
     g.addEventListener('click', onClickDelegated);
 
     // --- Hover dispatch ---
+    // Also toggles an "is-hover" class on the hovered path (mouse/pen only),
+    // so styling does not stick after a touch tap like CSS :hover does.
     var hoveredId = null;
+    function setHoverClass(id, on) {
+      var rec = id != null ? entityMap[id] : null;
+      if (!rec) return;
+      var cls = rec.pathEl.className.baseVal || '';
+      var has = /\bis-hover\b/.test(cls);
+      if (on && !has) rec.pathEl.setAttribute('class', cls + (cls ? ' ' : '') + 'is-hover');
+      else if (!on && has) rec.pathEl.setAttribute('class', cls.replace(/\bis-hover\b/g, '').replace(/\s+/g, ' ').trim());
+    }
+    function clearHover() {
+      if (hoveredId !== null) {
+        setHoverClass(hoveredId, false);
+        hoveredId = null;
+        onHover(null);
+      }
+    }
     function onPointerOver(e) {
-      if (destroyed) return;
+      if (destroyed || e.pointerType === 'touch') return;
       var target = e.target;
       if (!target || !target.getAttribute) return;
       var id = target.getAttribute('data-id');
       if (!id) return;
       if (id !== hoveredId) {
+        if (hoveredId !== null) setHoverClass(hoveredId, false);
         hoveredId = id;
+        if (interactive) setHoverClass(id, true);
         onHover(id);
       }
     }
     function onPointerOut(e) {
       if (destroyed) return;
       var related = e.relatedTarget;
-      // If moving to another descendant of g (another country path), the
-      // subsequent pointerover on that path will update hoveredId; but if
-      // leaving the group entirely, clear.
-      if (related && g.contains(related)) return;
-      if (hoveredId !== null) {
-        hoveredId = null;
-        onHover(null);
-      }
+      // Moving between a path and its own hit stroke keeps the hover.
+      if (related && related.getAttribute && hoveredId !== null &&
+          related.getAttribute('data-id') === hoveredId) return;
+      if (related && g.contains(related)) return; // next pointerover updates it
+      clearHover();
     }
     g.addEventListener('pointerover', onPointerOver);
     g.addEventListener('pointerout', onPointerOut);
