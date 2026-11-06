@@ -386,7 +386,7 @@ button {
   cursor: pointer;
 }
 
-.country:hover {
+.country.is-hover {
   fill: var(--land-hover);
 }
 

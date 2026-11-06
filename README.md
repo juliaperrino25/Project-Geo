@@ -54,7 +54,8 @@ node tools/bundle.js    # same, as a fragment
 
 ```bash
 npm run test:unit   # game-engine rules (node --test)
-npm run test:e2e    # Playwright: renders the default (1940) map, plays a full 130-country game to 100 %, checks reveals, regions and the year toggle
+npm run test:e2e    # Playwright: renders the default (1940) map, plays a full game to 100 %, checks reveals, regions, the quiz-set option and the year toggle
+npm run test:map    # Playwright: zoom, pan, pinch, click-vs-drag, tiny-island hit targets, hover, resize
 npm test            # both
 ```
 

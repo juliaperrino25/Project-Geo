@@ -7,9 +7,10 @@
   "scripts": {
     "test:unit": "node --test test/game.test.js",
     "test:e2e": "node test/e2e.js",
-    "test": "npm run test:unit && npm run test:e2e",
+    "test": "npm run test:unit && npm run test:e2e && npm run test:map",
     "serve": "npx http-server -p 8080 -c-1 .",
-    "bundle": "node tools/bundle.js --full"
+    "bundle": "node tools/bundle.js --full",
+    "test:map": "node test/map.e2e.js"
   },
   "license": "MIT"
 }
