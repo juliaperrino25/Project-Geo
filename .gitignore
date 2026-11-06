@@ -3,3 +3,4 @@ test/screenshots/
 tools/cache/
 .DS_Store
 dist/
+.claude/
