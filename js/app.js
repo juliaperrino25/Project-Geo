@@ -19,6 +19,7 @@
 
   var lastRegionId = 'world';
   var lastIncludeSmall = false;
+  var lastQuizSet = 'all';
   var hasStartedOnce = false;
 
   // ---------- registry helpers ----------
@@ -271,16 +272,25 @@
   function start(regionId, opts) {
     opts = opts || {};
     var includeSmall = !!opts.includeSmall;
+    var quizSet = opts.quizSet === 'sovereign' ? 'sovereign' : 'all';
 
     var ids = WORLD.entities
       .filter(function (e) {
         return (regionId === 'world' || e.region === regionId) &&
-          (e.quiz || includeSmall);
+          (e.quiz || includeSmall) &&
+          (quizSet === 'all' || e.status === 'sovereign');
       })
       .map(function (e) { return e.id; });
 
+    if (!ids.length) {
+      hideResults();
+      setFeedback('No entities match that selection.');
+      return;
+    }
+
     lastRegionId = regionId;
     lastIncludeSmall = includeSmall;
+    lastQuizSet = quizSet;
 
     hideResults();
     setFeedback('');
@@ -430,12 +440,15 @@
 
   function wireControls() {
     els.startBtn.addEventListener('click', function () {
-      start(els.regionSelect.value, { includeSmall: els.includeSmall.checked });
+      start(els.regionSelect.value, {
+        includeSmall: els.includeSmall.checked,
+        quizSet: els.quizSet.value
+      });
     });
 
     els.playAgainBtn.addEventListener('click', function () {
       hideResults();
-      start(lastRegionId, { includeSmall: lastIncludeSmall });
+      start(lastRegionId, { includeSmall: lastIncludeSmall, quizSet: lastQuizSet });
     });
 
     els.regionSelect.addEventListener('change', function () {
@@ -468,6 +481,7 @@
     els.timer = byId('timer');
     els.score = byId('score');
     els.regionSelect = byId('region-select');
+    els.quizSet = byId('quiz-set');
     els.includeSmall = byId('include-small');
     els.startBtn = byId('start-btn');
     els.zoomIn = byId('zoom-in');
